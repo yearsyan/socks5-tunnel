@@ -30,7 +30,7 @@ SRCDIR := $(LOCAL_PATH)/src
 
 include $(CLEAR_VARS)
 include $(LOCAL_PATH)/build.mk
-LOCAL_MODULE    := hev-socks5-tunnel
+LOCAL_MODULE    := tunnel
 LOCAL_SRC_FILES := $(patsubst $(SRCDIR)/%,src/%,$(SRCFILES))
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/src/misc \
@@ -43,5 +43,6 @@ LOCAL_CFLAGS += -DFD_SET_DEFINED -DSOCKLEN_T_DEFINED $(VERSION_CFLAGS)
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 LOCAL_CFLAGS += -mfpu=neon
 endif
+LOCAL_LDFLAGS += -Wl,--gc-sections
 LOCAL_STATIC_LIBRARIES := yaml lwip hev-task-system
 include $(BUILD_SHARED_LIBRARY)

@@ -25,6 +25,9 @@
 #ifndef PKGNAME
 #define PKGNAME hev/htproxy
 #endif
+#ifndef SERVICE_CLASS
+#define SERVICE_CLASS "tunnel.vpn.Service"
+#endif
 /* clang-format on */
 
 #define STR(s) STR_ARG (s)
@@ -48,9 +51,9 @@ static void native_start_service (JNIEnv *env, jobject thiz, jstring conig_path,
 static void native_stop_service (JNIEnv *env, jobject thiz);
 
 static JNINativeMethod native_methods[] = {
-    { "TProxyStartService", "(Ljava/lang/String;I)V",
+    { "startTunnelServiceFromConfigFile", "(Ljava/lang/String;I)V",
       (void *)native_start_service },
-    { "TProxyStopService", "()V", (void *)native_stop_service },
+    { "stopTunnelService", "()V", (void *)native_stop_service },
 };
 
 static void
@@ -70,7 +73,7 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
         return 0;
     }
 
-    klass = (*env)->FindClass (env, STR (PKGNAME) "/TProxyService");
+    klass = (*env)->FindClass (env, SERVICE_CLASS);
     (*env)->RegisterNatives (env, klass, native_methods,
                              N_ELEMENTS (native_methods));
     (*env)->DeleteLocalRef (env, klass);
